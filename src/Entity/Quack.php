@@ -14,7 +14,7 @@ class Quack
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, length: 280)]
     private ?string $content = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
