@@ -53,7 +53,7 @@ class QuackController extends AbstractController
         ]);
     }
 
-    #[Route('/feed', name: 'timeline', methods: ['GET'])]
+    #[Route('/', name: 'timeline', methods: ['GET'])]
     public function showAllQuacks(EntityManagerInterface $entityManager): Response
     {
         $quack = $entityManager->getRepository(Quack::class)->findAll();
@@ -65,7 +65,7 @@ class QuackController extends AbstractController
         }
 
         return $this->render('quack/index.html.twig', [
-            'controller_name' => 'QuackController',
+            'all_quacks' => $quack,
         ]);
 
     }
