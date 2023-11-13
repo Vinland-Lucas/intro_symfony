@@ -3,14 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Quack;
+use App\Form\QuackType;
 use App\Repository\QuackRepository;
 use Doctrine\DBAL\Types\DateType;
 use Doctrine\DBAL\Types\TextType;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function Symfony\Component\Clock\now;
@@ -18,6 +19,7 @@ use function Symfony\Component\Clock\now;
 #[Route('/home', name: 'app_quack')]
 class QuackController extends AbstractController
 {
+
 //    #[Route('/hello', name: 'app_quack')]
 //    public function index(): Response
 //    {
@@ -25,6 +27,31 @@ class QuackController extends AbstractController
 //            'controller_name' => 'QuackController',
 //        ]);
 //    }
+
+    #[Route('/quack', name: 'create_quack', methods: ['GET', 'POST'])]
+    public function createQuack(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $quack = new Quack();
+
+        $form = $this->createForm(QuackType::class, $quack);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $quack = $form->getData();
+
+            // tell Doctrine you want to (eventually) save the Quack (no queries yet)
+            $entityManager->persist($quack);
+
+            // actually executes the queries (i.e. the INSERT query)
+            $entityManager->flush();
+
+            return $this->redirectToRoute('timeline');
+        }
+
+        return $this->render('quack/form.html.twig', [
+            'form' => $form,
+        ]);
+    }
 
     #[Route('/feed', name: 'timeline', methods: ['GET'])]
     public function showAllQuacks(EntityManagerInterface $entityManager): Response
@@ -50,46 +77,13 @@ class QuackController extends AbstractController
 
         if (!$quack) {
             throw $this->createNotFoundException(
-              'No quack found for this '.$id
+                'No quack found for this '.$id
             );
         }
 
         return $this->render('quack/index.html.twig', [
             'controller_name' => 'QuackController',
         ]);
-    }
-
-    #[Route('/quack', name: 'create_quack', methods: ['POST'])]
-    public function createQuack(EntityManagerInterface $entityManager, Request $request): Response
-    {
-        $quack = new Quack();
-        $quack->setContent("Yoooooooo ! C'est mon premier QUACK xD !");
-        $quack->setCreatedAt('2023-11-10 10:04');
-
-        $form = $this->createFormBuilder($quack)
-            ->add('quack', TextType::class)
-            ->add('dueDate', DateType::class)
-            ->add('save', SubmitType::class, ['label' => 'Create Task'])
-            ->getForm();
-
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            $quack = $form->getData();
-
-            return $this->redirectToRoute('quack_success');
-        }
-
-        // tell Doctrine you want to (eventually) save the Product (no queries yet)
-        $entityManager->persist($quack);
-
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
-
-        return $this->render('quack/form.html.twig', [
-            'form' => $form,
-        ]);
-
-//        return new Response('Saved new quack with id '.$quack->getId());
     }
 
     #[Route('/quack/edit/{id}', name: 'edit_quack', methods: 'PUT')]
