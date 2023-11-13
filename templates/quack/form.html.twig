@@ -1,9 +1,16 @@
-{% extends 'base.htms.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Quack Form{% endblock %}
 
 {% block body %}
     <div>
+        <h1>Quack Form</h1>
+
+        <div class="flex flex-col">
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
 
     </div>
 {% endblock %}
