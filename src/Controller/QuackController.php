@@ -120,7 +120,7 @@ class QuackController extends AbstractController
         ]);
     }
 
-    #[Route('/quack/delete/{id}', name: 'delete_quack', methods: 'DELETE')]
+    #[Route('/quack/delete/{id}', name: 'delete_quack', methods: ['DELETE', 'POST', 'GET'])]
     public function deleteQuack(EntityManagerInterface $entityManager, int $id): Response
     {
         $quack = $entityManager->getRepository(Quack::class)->find($id);
