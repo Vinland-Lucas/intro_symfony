@@ -81,15 +81,29 @@ class QuackController extends AbstractController
             );
         }
 
-        return $this->render('quack/index.html.twig', [
-            'controller_name' => 'QuackController',
+        return $this->render('quack/getquackbyid.html.twig', [
+            'quackById' => $quack->getId(),
         ]);
     }
 
-    #[Route('/quack/edit/{id}', name: 'edit_quack', methods: 'PUT')]
-    public function editQuack(EntityManagerInterface $entityManager, int $id): Response
+
+    #[Route('/quack/edit/{id}', name: 'edit_quack', methods: ['GET','PUT', 'POST'])]
+    public function editQuack(EntityManagerInterface $entityManager, Request $request, int $id): Response
     {
         $quack = $entityManager->getRepository(Quack::class)->find($id);
+
+        $form = $this->createForm(QuackType::class, $quack);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $quack = $form->getData();
+
+            $entityManager->persist($quack);
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('timeline');
+        }
 
         if (!$quack) {
             throw $this->createNotFoundException(
@@ -97,15 +111,16 @@ class QuackController extends AbstractController
             );
         }
 
-        $quack->setContent("J'ai modifié mon quack !!!");
-        $entityManager->flush();
+//        $quack->setContent("J'ai modifié mon quack !!!");
+//        $entityManager->flush();
 
-        return $this->redirectToRoute('timeline', [
-            'id' => $quack->getId()
+        return $this->render('quack/editquack.html.twig', [
+            'edit' => $quack->getId(),
+            'form' => $form
         ]);
     }
 
-    #[Route('/quack/delete/{id}', name: 'delete_quack', methods: 'PUT')]
+    #[Route('/quack/delete/{id}', name: 'delete_quack', methods: 'DELETE')]
     public function deleteQuack(EntityManagerInterface $entityManager, int $id): Response
     {
         $quack = $entityManager->getRepository(Quack::class)->find($id);
@@ -120,9 +135,8 @@ class QuackController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('timeline', [
-            'id' => $quack->getId()
+            'delete' => $quack->getId()
         ]);
     }
-
 
 }
