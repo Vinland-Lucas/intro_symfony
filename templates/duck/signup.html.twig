@@ -12,38 +12,51 @@
         <h1 class="text-5xl">Create your Quack account ! 🦆</h1>
 
         <div class="flex flex-col w-1/3 h-2/4 justify-between">
-            <div class="flex flex-col justify-between h-14">
-                {{ form_label(form.firstname) }}
+            {{ form_start(form, { 'attr': {'class': 'flex flex-col w-full h-full justify-between'}}) }}
+                <div class="flex flex-col justify-between h-14">
+                    {{ form_label(form.firstname) }}
 
-                {{ form_widget(form.firstname, { 'attr': {'class': 'h-7 rounded'}}) }}
-            </div>
+                    {{ form_widget(form.firstname, { 'attr': {'class': 'h-7 rounded'}}) }}
+                </div>
 
-            <div class="flex flex-col justify-between h-14">
-                {{ form_label(form.lastname) }}
+                <div class="flex flex-col justify-between h-14">
+                    {{ form_label(form.lastname) }}
 
-                {{ form_widget(form.lastname, { 'attr': {'class': 'h-7 rounded'}}) }}
-            </div>
+                    {{ form_widget(form.lastname, { 'attr': {'class': 'h-7 rounded'}}) }}
+                </div>
 
-            <div class="flex flex-col justify-between h-14">
-                {{ form_label(form.duckname) }}
+                <div class="flex flex-col justify-between h-14">
+                    {{ form_label(form.duckname) }}
 
-                {{ form_widget(form.duckname, { 'attr': {'class': 'h-7 rounded'}}) }}
-            </div>
+                    {{ form_widget(form.duckname, { 'attr': {'class': 'h-7 rounded'}}) }}
+                </div>
 
-            <div class="flex flex-col justify-between h-14">
-                {{ form_label(form.email) }}
+                <div class="flex flex-col justify-between h-14">
+                    {{ form_label(form.email) }}
 
-                {{ form_widget(form.email, { 'attr': {'class': 'h-7 rounded'}}) }}
-            </div>
+                    {{ form_widget(form.email, { 'attr': {'class': 'h-7 rounded'}}) }}
+                </div>
 
-            <div class="flex flex-col justify-between h-14">
-                {{ form_label(form.password) }}
+                <div class="flex flex-col justify-between h-14">
+                    {{ form_label(form.password) }}
 
-                {{ form_widget(form.password, { 'attr': {'class': 'h-7 rounded'}}) }}
-            </div>
+                    {{ form_widget(form.password, { 'attr': {'class': 'h-7 rounded'}}) }}
+                </div>
+
+                <div class="flex justify-center">
+                    {{ form_widget(form.save, { 'attr': {'class': 'btn btn-secondary text-white'}}) }}
+                </div>
+
+            {{ form_end(form) }}
+
         </div>
 
-        {{ form_row(form.save, { 'attr': {'class': 'btn btn-secondary text-white'}}) }}
+
+
+
+
+
+
 {#                       <a href="{{ path('/home') }}"><button class="btn btn-secondary" type="submit">Create</button></a>#}
 
     </div>
