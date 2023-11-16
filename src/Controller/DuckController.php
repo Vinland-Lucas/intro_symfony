@@ -38,7 +38,7 @@ class DuckController extends AbstractController
             // actually executes the queries (i.e. the INSERT query)
             $entityManager->flush();
 
-            return $this->redirectToRoute('/app_quack');
+            return $this->redirectToRoute('timeline');
         }
 
         return $this->render('duck/signup.html.twig', [
