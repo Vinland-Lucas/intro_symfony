@@ -38,9 +38,9 @@ class Duck
     private ?string $email = null;
 
     #[Assert\NotBlank]
-    #[Assert\PasswordStrength([
-        'minScore' => PasswordStrength::STRENGTH_VERY_STRONG,
-    ])]
+//    #[Assert\PasswordStrength([
+//        'minScore' => PasswordStrength::STRENGTH_VERY_STRONG,
+//    ])]
     #[Assert\AtLeastOneOf([
         new Assert\Length(min: 10),
     ])]
