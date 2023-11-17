@@ -102,7 +102,7 @@ class QuackController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('timeline');
+            return $this->redirectToRoute('timeline', [], Response::HTTP_MOVED_PERMANENTLY);
         }
 
         if (!$quack) {
