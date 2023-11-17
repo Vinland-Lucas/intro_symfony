@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/signup', name: 'sign_up')]
 class RegistrationController extends AbstractController
 {
 //    #[Route('/registration', name: 'app_registration')]
@@ -22,7 +21,7 @@ class RegistrationController extends AbstractController
 //        ]);
 //    }
 
-    #[Route('/', name: 'create_user', methods: ['GET', 'POST'])]
+    #[Route('/signup', name: 'sign_up', methods: ['GET', 'POST'])]
     public function createUserAccount(EntityManagerInterface $entityManager, Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
